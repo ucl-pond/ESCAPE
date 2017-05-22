@@ -1,4 +1,5 @@
 import os
+import re
 import json
 import time
 # Written in Python 2.7 use pickle for 3
@@ -40,6 +41,10 @@ def get_interactions(echo_id, cred):
         interactions += res['activities']
     with open('{}_Interactions.pkl'.format(echo_id), 'wb') as f:
         pkl.dump(interactions, f)
+    pattern = '\.*res\S+\.json'
+    for f in os.listdir('.'):
+        if re.search(pattern, f):
+            os.remove(os.path.join('.', f))
 
 
 def get_audio(echo_id, cred):

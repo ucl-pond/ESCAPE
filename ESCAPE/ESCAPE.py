@@ -21,7 +21,8 @@ def main(args):
     curl = open(args.cred).read()
     cookie = scraper.get_cookie(curl)
     scraper.get_interactions(echo_id, cookie)
-    scraper.get_audio(echo_id, cookie)
+    # scraper.get_audio(echo_id, cookie)
+    exit()
     audio_dir = '{}_Audio/'.format(echo_id)
 
     fnames = [x for x in os.listdir(audio_dir) if x[-3:] == 'wav']
