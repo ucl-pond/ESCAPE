@@ -92,13 +92,10 @@ ENV/
 .cred
 
 # Saved JSON files
-.json
-
-# Saved wav files
-.wav
+*.json
 
 # Saved pickle files
-.pkl
+*.pkl
 
 # Audio folder
 *_Audio/
