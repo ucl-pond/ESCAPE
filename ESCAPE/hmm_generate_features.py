@@ -39,8 +39,8 @@ def compute_sim_mat(X, models):
     n_models = len(models)
     n_audio = len(X)
     likelihoods = np.empty((n_audio, n_models))
-    for i in xrange(n_audio):
-        for j in xrange(n_models):
+    for i in range(n_audio):
+        for j in range(n_models):
             likelihoods[i, j] = models[j].score(X[i])
     return likelihoods
 
@@ -69,9 +69,9 @@ def main(args):
     y = np.array(y)
 
     likes = []
-    for i in xrange(len(feats)):
+    for i in range(len(feats)):
         likes.append([])
-        for j in xrange(len(feats)):
+        for j in range(len(feats)):
             likes[-1].append(models[j].score(feats[i]))
     likes = np.array(likes)
     with open('{}_tagged_features.pkl'.format(args.echo_id), 'wb') as f:
@@ -84,7 +84,7 @@ def main(args):
             all_features[fname] = []
             full_fname = directory+fname
             rate, sig = scipy.io.wavfile.read(full_fname)
-            for i in xrange(len(feats)):
+            for i in range(len(feats)):
                 all_features[fname].append(models[i].score(get_mfcc(sig)))
         with open('{}_wav_features.pkl'.format(args.echo_id), 'wb') as f:
             pickle.dump(all_features, f)

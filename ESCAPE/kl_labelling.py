@@ -3,7 +3,7 @@ from __future__ import print_function
 import numpy as np
 import scipy.io.wavfile
 import os
-import cPickle as pkl
+import pickle as pkl
 import wave
 import pyaudio
 import argparse
@@ -12,7 +12,7 @@ import sys
 
 
 def read_tags(fname):
-    if not os.path.exists(fname):
+    if fname is None or not os.path.exists(fname):
         print('Input file not found, starting from no tags.')
         return {}
     return pkl.load(open(fname, 'rb'))
@@ -49,16 +49,11 @@ def kl_distance(m1, m2, c1, c2):
 
 
 def match_audio(sig, tagged_data, rate=16000, kl_cutoff=50):
-    best_tag = None
-    best_corr = 9e10
-    for key, value in tagged_data.iteritems():
+    for key, value in tagged_data.items():
         taged_sig = value['sig']
         corr = get_correlation(sig, taged_sig, rate=rate)
-        if(corr < best_corr):
-            best_tag = value['tag']
-            best_corr = corr
-    if(best_corr < kl_cutoff):
-        return best_tag, best_corr
+        if corr < kl_cutoff:
+            return value['tag'], corr
     return None, None
 
 
@@ -76,7 +71,7 @@ def tag_audio(fname):
                     output=True, stream_callback=callback)
     stream.start_stream()
 
-    tag = raw_input('Tag this audio (q! for early quitting):')
+    tag = input('Tag this audio (q! for early quitting):')
     if(tag == 'q!'):
         return -1
 
@@ -105,19 +100,21 @@ def main(args):
     fnames = [x for x in os.listdir(directory) if x[-3:] == 'wav']
     tagged_data = read_tags(args.input)
     for fname in fnames:
-        print(fname)
         fname = directory+fname
         rate, sig = scipy.io.wavfile.read(fname)
         tag, corr = match_audio(sig, tagged_data)
-        if(tag is None):
+        if tag is None:
             tag = tag_audio(fname)
-            if(tag is not None):
+            if tag != 0 and tag != -1:
                 tagged_data = update_tags(fname, sig, tag,
                                           tagged_data, args.output,
                                           args.save)
+            if tag == -1:
+                break
             print('\n\n')
         else:
-            print(tag, '\n\n')
+            print('Closest tag is {} with a distance of {}'.format(tag,
+                                                                   corr))
     pkl.dump(tagged_data, open(args.output, 'wb'))
 
 
