@@ -22,7 +22,6 @@ def main(args):
     cookie = scraper.get_cookie(curl)
     scraper.get_interactions(echo_id, cookie)
     # scraper.get_audio(echo_id, cookie)
-    exit()
     audio_dir = '{}_Audio/'.format(echo_id)
 
     fnames = [x for x in os.listdir(audio_dir) if x[-3:] == 'wav']
@@ -67,12 +66,12 @@ def main(args):
 
     plt_ax = [(0, 1), (0, 2), (1, 2)]
     fig, ax = plt.subplots(3)
-    lines = dict((x, None) for x in xrange(le.classes_.shape[0]))
-    for i in xrange(3):
+    lines = dict((x, None) for x in range(le.classes_.shape[0]))
+    for i in range(3):
         x_ax, y_ax = plt_ax[i]
         ax[i].set_xlabel('PC{}'.format(x_ax+1))
         ax[i].set_ylabel('PC{}'.format(y_ax+1))
-        for j in xrange(le.classes_.shape[0]):
+        for j in range(le.classes_.shape[0]):
             line = ax[i].scatter(X[y == j, x_ax], X[y == j, y_ax],
                                  color=colors[j])
             lines[j] = line

@@ -48,7 +48,7 @@ def kl_distance(m1, m2, c1, c2):
     return dist
 
 
-def match_audio(sig, tagged_data, rate=16000, kl_cutoff=50):
+def match_audio(sig, tagged_data, rate=16000, kl_cutoff=35):
     for key, value in tagged_data.items():
         taged_sig = value['sig']
         corr = get_correlation(sig, taged_sig, rate=rate)
