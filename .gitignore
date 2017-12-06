@@ -99,3 +99,7 @@ ENV/
 
 # Audio folder
 *_Audio/
+
+# Other stuff
+*.csv
+*.ipynb
